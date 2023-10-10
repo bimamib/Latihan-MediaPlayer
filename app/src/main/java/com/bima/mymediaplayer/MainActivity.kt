@@ -4,6 +4,7 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +15,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val btnPlay = findViewById<Button>(R.id.btn_play)
+        val btnStop = findViewById<Button>(R.id.btn_stop)
+        btnPlay.setOnClickListener {
+            if (!isReady) {
+                mMediaPlayer?.prepareAsync()
+            } else {
+                if (mMediaPlayer?.isPlaying as Boolean) {
+                    mMediaPlayer?.pause()
+                } else {
+                    mMediaPlayer?.start()
+                }
+            }
+        }
+        btnStop.setOnClickListener {
+            if (mMediaPlayer?.isPlaying as Boolean || isReady) {
+                mMediaPlayer?.stop()
+                isReady = false
+            }
+        }
 
         init()
     }
